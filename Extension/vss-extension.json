@@ -56,13 +56,13 @@
   ],
   "contributions": [
     {
-      "id": "PublishAzureDscPullServerConfigurations-Task",
+      "id": "DeployConfigurations",
       "type": "ms.vss-distributed-task.task",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
       "properties": {
-        "name": "PublishAzureDscPullServerConfigurations-Task"
+        "name": "DeployConfigurations"
       }
     }
   ]
