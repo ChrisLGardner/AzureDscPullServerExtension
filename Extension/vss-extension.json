@@ -1,0 +1,69 @@
+{
+  "manifestVersion": 1,
+  "id": "CLG-VSTS-AzureDscPullServer-Extension",
+  "version": "1.0.0",
+  "name": "Azure DSC Pull Server Tasks",
+  "publisher": "chrisgardner",
+  "description": "Various tasks for publishing DSC configurations to the Azure DSC Pull Server.",
+  "categories": [
+    "Build and release"
+  ],
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "tags": [
+    "Release",
+    "Package",
+    "Publish"
+  ],
+  "galleryFlags": [
+    "Public"
+  ],
+  "branding": {
+    "color": "#f97923",
+    "theme": "dark"
+  },
+  "icons": {
+    "default": "images/logo.png"
+  },
+  "links": {
+    "getstarted": {
+      "uri": "https://github.com/chrislgardner/AzureDscPullServerExtension/wiki"
+    },
+    "support": {
+      "uri": "https://github.com/chrislgardner/AzureDscPullServerExtension/issues"
+    }
+  },
+  "screenshots": [
+    {
+      "path": "images/screenshot1.png"
+    }
+  ],
+  "content": {
+    "details": {
+      "path": "readme.md"
+    },
+    "license": {
+      "path": "license.md"
+    }
+  },
+  "files": [
+    {
+      "path": "DeployConfigurations"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "PublishAzureDscPullServerConfigurations-Task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "PublishAzureDscPullServerConfigurations-Task"
+      }
+    }
+  ]
+}
