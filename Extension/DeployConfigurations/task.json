@@ -18,6 +18,11 @@
   "demands": [],
   "minimumAgentVersion": "1.95.0",
   "groups": [
+    {
+      "name": "AzureDetails",
+      "displayName": "AzureDetails",
+      "isExpanded": true
+    }
   ],
   "inputs": [
       {
