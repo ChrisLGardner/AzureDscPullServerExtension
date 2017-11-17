@@ -1,35 +1,22 @@
 [cmdletbinding()]
 param (
-    $DscConfigPath,
-    $username,
-    $envPrefix,
+    $SourcePath,
     $StorageAccountName,
-    $AutomationAccount,
+    $AutomationAccountName,
     $ResourceGroupName,
     [Switch]$OverwriteExistingConfigurations
 )
+Trace-VstsEnteringInvocation $MyInvocation
+Import-Module $PSScriptRoot\ps_modules\VstsAzureHelpers_
+Initialize-Azure -azurePsVersion $targetAzurePs
+Import-Module "$PSScriptRoot\Helper.psm1"
 
-function Get-Ast {
-    [CmdletBinding()]
-    param (
-        $path
-    )
-
-    $tokens = $parseErrors = $null
-    [System.Management.Automation.Language.Parser]::ParseInput(
-        (Get-Content $path -Raw),
-        $path,
-        [Ref]$tokens,
-        [Ref]$parseErrors
-    )
-}
-
-Write-Verbose -Message "Finding all the configurations available under the path: $DscConfigPath"
-$Configs = Get-ChildItem $DscConfigPath -Recurse -include *.ps1
+Write-Verbose -Message "Finding all the configurations available under the path: $SourcePath"
+$Configs = Get-ChildItem $SourcePath -Recurse -include *.ps1
 Write-Verbose -Message "Found $($Configs.Count) configurations"
 
 Write-Verbose -Message "Publishing configurations to specified Azure Automation account"
-$PublishedConfigs = Get-AzureRmAutomationDscConfiguration -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccount
+$PublishedConfigs = Get-AzureRmAutomationDscConfiguration -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName
 $Configs | Foreach-Object {
     if ($PublishedConfigs.Name -notcontains $_.BaseName) {
         Write-Verbose -Message "Publishing Configuration file: $($_.Name)"
@@ -37,7 +24,7 @@ $Configs | Foreach-Object {
             SourcePath = $_.FullName
             ResourceGroupName = $ResourceGroupName
             Published = $true
-            AutomationAccountName = $AutomationAccount
+            AutomationAccountName = $AutomationAccountName
             Verbose = $True
         }
     }
@@ -47,7 +34,7 @@ $Configs | Foreach-Object {
             SourcePath = $_.FullName
             ResourceGroupName = $ResourceGroupName
             Published = $true
-            AutomationAccountName = $AutomationAccount
+            AutomationAccountName = $AutomationAccountName
             Verbose = $True
             Force = $True
         }
@@ -112,9 +99,9 @@ Foreach ($Resource in $DscResources) {
     $DscLocationSasToken = New-AzureStorageBlobSASToken -Blob $DSCLocation.Name -Container 'dscmodules' -StartTime (Get-Date) -ExpiryTime (Get-Date).AddMinutes(5) -Context $StorageAccount.Context -Permission rl -FullUri
 
     Write-Verbose -Message "$($Resource.BaseName) -- Publishing DSC Resource to Azure Automation."
-    $DscUpload = New-AzureRmAutomationModule -Name $Resource.BaseName -ContentLinkUri "$DscLocationSasToken" -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccount
+    $DscUpload = New-AzureRmAutomationModule -Name $Resource.BaseName -ContentLinkUri "$DscLocationSasToken" -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName
 
-    While ((Get-AzureRmAutomationModule -Name $Resource.BaseName -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccount -ErrorAction SilentlyContinue).ProvisioningState -ne 'Succeeded') {
+    While ((Get-AzureRmAutomationModule -Name $Resource.BaseName -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName -ErrorAction SilentlyContinue).ProvisioningState -ne 'Succeeded') {
         Write-Verbose -Message "$($Resource.BaseName) -- Waiting for publish to complete"
         Start-Sleep -Seconds 10
     }
@@ -127,5 +114,5 @@ $Params = @{
 }
 $Configs | foreach-Object {
     Write-Verbose -Message "Compiling $($_.Name) configuration."
-    #Start-AzureRmAutomationDscCompilationJob -ConfigurationName $_.BaseName -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccount -Parameters $Params -ConfigurationData (iex (Get-Content $PSScriptRoot\..\..\Environments\Generic-WebServer-SQL\Generic-WebServer-SQL.psd1 -raw))
+    #Start-AzureRmAutomationDscCompilationJob -ConfigurationName $_.BaseName -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName -Parameters $Params -ConfigurationData (iex (Get-Content $PSScriptRoot\..\..\Environments\Generic-WebServer-SQL\Generic-WebServer-SQL.psd1 -raw))
 }
