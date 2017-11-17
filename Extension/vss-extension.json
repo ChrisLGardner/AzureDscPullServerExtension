@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "CLG-VSTS-AzureDscPullServer-Extension",
-  "version": "1.0.0",
+  "version": "1.0.0.0",
   "name": "Azure DSC Pull Server Tasks",
   "publisher": "chrisgardner",
   "description": "Various tasks for publishing DSC configurations to the Azure DSC Pull Server.",
