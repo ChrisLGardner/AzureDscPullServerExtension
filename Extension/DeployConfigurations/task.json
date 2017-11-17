@@ -59,12 +59,12 @@
       }
     },
     {
-      "name": "StorageAccount",
+      "name": "StorageAccountName",
       "type": "pickList",
       "label": "RM Storage Account",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Specify a pre-existing ARM storage account to store DSC resources in",
+      "helpMarkDown": "Specify a pre-existing ARM storage account to store DSC resources in. A container called dscmodules will be created to store them.",
       "properties": {
           "EditableOptions": "True"
       }
