@@ -18,11 +18,6 @@
   "demands": [],
   "minimumAgentVersion": "1.95.0",
   "groups": [
-    {
-      "name": "AzureDetails",
-      "displayName": "AzureDetails",
-      "isExpanded": true
-    }
   ],
   "inputs": [
       {
@@ -46,7 +41,6 @@
       "type": "pickList",
       "label": "Resource group",
       "required": true,
-      "groupName": "AzureDetails",
       "helpMarkDown": "Provide the name of a resource group.",
       "properties": {
           "EditableOptions": "True"
@@ -57,7 +51,6 @@
       "type": "pickList",
       "label": "Automation Account",
       "required": true,
-      "groupName": "AzureDetails",
       "helpMarkDown": "Provide the name of the Azure Automation Account.",
       "properties": {
           "EditableOptions": "True"
@@ -92,7 +85,7 @@
     {
       "target": "azureAutomationAccount",
       "endpointId": "$(ConnectedServiceName)",
-      "dataSourceName": "AutomationAccounts"
+      "EndpointUrl": "https://management.azure.com/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroupName)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31"
     },
     {
       "target": "StorageAccountRM",
