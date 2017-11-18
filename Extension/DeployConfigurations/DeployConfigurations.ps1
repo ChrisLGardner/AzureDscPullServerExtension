@@ -7,8 +7,8 @@ param (
     [Switch]$OverwriteExistingConfigurations
 )
 Trace-VstsEnteringInvocation $MyInvocation
-Import-Module $PSScriptRoot\ps_modules\VstsAzureHelpers_
-Initialize-Azure -azurePsVersion $targetAzurePs
+Import-Module $PSScriptRoot\AzureHelpers\VstsAzureHelpers_.psm1
+Initialize-Azure
 Import-Module "$PSScriptRoot\Helper.psm1"
 
 Write-Verbose -Message "Finding all the configurations available under the path: $SourcePath"
