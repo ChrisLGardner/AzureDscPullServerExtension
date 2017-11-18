@@ -7,7 +7,7 @@ param (
     [Switch]$OverwriteExistingConfigurations
 )
 Trace-VstsEnteringInvocation $MyInvocation
-Import-Module $PSScriptRoot\AzureHelpers\VstsAzureHelpers_.psm1
+Import-Module $PSScriptRoot\ps_modules\AzureHelpers\VstsAzureHelpers_.psm1
 Initialize-Azure
 Import-Module "$PSScriptRoot\Helper.psm1"
 
