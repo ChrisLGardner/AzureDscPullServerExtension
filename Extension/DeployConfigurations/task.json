@@ -88,20 +88,13 @@
       "parameters": {
         "ResourceGroupName": "$(ResourceGroupName)"
       },
-      "dataSourceName": "AutomationAccounts",
-      "resultTemplate": "{\"Value\" : \"{{{name}}}\", \"DisplayValue\" : \"{{{name}}}\"  }"
+      "EndpointUrl": "{{endpoint.url}}/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroupName)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31",
+      "resultSelector": "jsonpath:$.value[*]"
     },
     {
       "target": "StorageAccountRM",
-      "endpointId": "$(ConnectedServiceNameARM)",
+      "endpointId": "$(ConnectedServiceName)",
       "dataSourceName": "AzureStorageAccountRM"
-    }
-  ],
-  "dataSources": [
-    {
-      "Name": "AutomationAccounts",
-      "EndpointUrl": "{{endpoint.url}}/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroupName)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31",
-      "resultSelector": "jsonpath:$.value[*]"
     }
   ],
   "instanceNameFormat": "Publish Azure DSC Configuration",
