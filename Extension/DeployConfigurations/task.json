@@ -85,11 +85,8 @@
     {
       "target": "automationAccountName",
       "endpointId": "$(ConnectedServiceName)",
-      "EndpointUrl": "{{endpoint.url}}/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroup)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31",
-      "resultSelector": "jsonpath:$.value[*].name",
-      "parameters": {
-        "resourceGroup": "$(ResourceGroupName)"
-      }
+      "EndpointUrl": "{{endpoint.url}}/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroupName)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31",
+      "resultSelector": "jsonpath:$.value[*].name"
     },
     {
       "target": "StorageAccountName",
