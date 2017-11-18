@@ -86,10 +86,9 @@
       "target": "azureAutomationAccount",
       "endpointId": "$(ConnectedServiceName)",
       "parameters": {
-        "ResourceGroupName": "$(ResourceGroupName)",
-        "Endpoint": "$(ConnectedServiceName)"
+        "ResourceGroupName": "$(ResourceGroupName)"
       },
-      "EndpointUrl": "https://management.azure.com/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroupName)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31",
+      "EndpointUrl": "{{endpoint.url}}/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroupName)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31",
       "resultSelector": "jsonpath:$.value[*].name"
     },
     {
