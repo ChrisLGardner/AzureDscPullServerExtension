@@ -88,11 +88,7 @@
       "parameters": {
         "ResourceGroupName": "$(ResourceGroupName)"
       },
-      "dataSourceName": "AutomationAccounts",
-      "resultTemplate": {
-         "Value" : "{{{name}}}",
-         "DisplayValue" : "{{{name}}}"
-        }
+      "dataSourceName": "AutomationAccounts"
     },
     {
       "target": "StorageAccountRM",
