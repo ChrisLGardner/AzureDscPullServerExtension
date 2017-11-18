@@ -85,10 +85,10 @@
     {
       "target": "automationAccountName",
       "endpointId": "$(ConnectedServiceName)",
-      "EndpointUrl": "{{endpoint.url}}/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroupName)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31",
+      "EndpointUrl": "{{endpoint.url}}/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroup)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31",
       "resultSelector": "jsonpath:$.value[*].name",
       "parameters": {
-        "resourceGroupName": "$(ResourceGroupName)"
+        "resourceGroup": "$(ResourceGroupName)"
       }
     },
     {
