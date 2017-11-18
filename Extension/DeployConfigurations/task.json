@@ -83,7 +83,7 @@
         "dataSourceName": "AzureResourceGroups"
     },
     {
-      "target": "azureAutomationAccount",
+      "target": "automationAccountName",
       "endpointId": "$(ConnectedServiceName)",
       "parameters": {
         "ResourceGroupName": "$(ResourceGroupName)"
