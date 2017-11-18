@@ -37,7 +37,7 @@
         "helpMarkDown": "Azure Resource Manager subscription to configure before running PowerShell"
     },
     {
-      "name": "resourceGroupName",
+      "name": "ResourceGroupName",
       "type": "pickList",
       "label": "Resource group",
       "required": true,
@@ -78,15 +78,19 @@
   ],
   "dataSourceBindings": [
     {
-        "target": "resourceGroupName",
+        "target": "ResourceGroupName",
         "endpointId": "$(ConnectedServiceName)",
         "dataSourceName": "AzureResourceGroups"
     },
     {
+      "name": "AutomationAccounts",
       "target": "automationAccountName",
       "endpointId": "$(ConnectedServiceName)",
       "EndpointUrl": "{{endpoint.url}}/subscriptions/$(endpoint.subscriptionId)/resourceGroups/$(ResourceGroupName)/providers/Microsoft.Automation/automationAccounts?api-version=2015-10-31",
-      "resultSelector": "jsonpath:$.value[*].name"
+      "resultSelector": "jsonpath:$.value[*].name",
+      "parameters": {
+        "ResourceGroupName": "$(ResourceGroupName)"
+      }
     },
     {
       "target": "StorageAccountName",
