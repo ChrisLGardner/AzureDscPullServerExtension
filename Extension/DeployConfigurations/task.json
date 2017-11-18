@@ -92,7 +92,7 @@
       "resultSelector": "jsonpath:$.value[*]"
     },
     {
-      "target": "StorageAccountRM",
+      "target": "StorageAccountName",
       "endpointId": "$(ConnectedServiceName)",
       "dataSourceName": "AzureStorageAccountRM"
     }
