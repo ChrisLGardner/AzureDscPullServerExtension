@@ -92,7 +92,7 @@
     {
       "target": "azureAutomationAccount",
       "endpointId": "$(ConnectedServiceName)",
-      "dataSourceName": "AzureAutomationAccount"
+      "dataSourceName": "AutomationAccounts"
     },
     {
       "target": "StorageAccountRM",
