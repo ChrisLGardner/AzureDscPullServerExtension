@@ -120,7 +120,7 @@ Foreach ($Resource in $DscResources) {
     $DscLocationSasToken = New-AzureStorageBlobSASToken -Blob $DSCLocation.Name -Container 'dscmodules' -StartTime (Get-Date) -ExpiryTime (Get-Date).AddMinutes(5) -Context $StorageAccount.Context -Permission rl -FullUri
 
     Write-Verbose -Message "$($Resource.BaseName) -- Publishing DSC Resource to Azure Automation."
-    $DscUpload = New-AzureRmAutomationModule -Name $Resource.BaseName -ContentLinkUri "$DscLocationSasToken" -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName
+    $DscUpload = New-AzureRmAutomationModule -Name $Resource.BaseName -ContentLink "$DscLocationSasToken" -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName
 
     While ((Get-AzureRmAutomationModule -Name $Resource.BaseName -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName -ErrorAction SilentlyContinue).ProvisioningState -ne 'Succeeded') {
         Write-Verbose -Message "$($Resource.BaseName) -- Waiting for publish to complete"
