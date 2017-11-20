@@ -1,15 +1,21 @@
 [cmdletbinding()]
 param (
-    $SourcePath,
+<#    $SourcePath,
     $StorageAccountName,
     $AutomationAccountName,
     $ResourceGroupName,
-    [Switch]$OverwriteExistingConfigurations
+    [Switch]$OverwriteExistingConfigurations#>
 )
 Trace-VstsEnteringInvocation $MyInvocation
 Import-Module $PSScriptRoot\ps_modules\AzureHelpers\AzureHelpers_.psm1
 Initialize-Azure
 Import-Module "$PSScriptRoot\Helper.psm1"
+
+$SourcePath = Get-VstsInput -Name 'SourcePath'
+$ResourceGroupName = Get-VstsInput -Name 'ResourceGroupName'
+$automationAccountName = Get-VstsInput -Name 'automationAccountName'
+$StorageAccountName = Get-VstsInput -Name 'StorageAccountName'
+$OverwriteExistingConfigurations = Get-VstsInput -Name 'OverwriteExistingConfigurations'
 
 Write-Verbose -Message "Finding all the configurations available under the path: $SourcePath"
 $Configs = Get-ChildItem $SourcePath -Recurse -include *.ps1
