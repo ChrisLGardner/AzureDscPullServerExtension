@@ -81,8 +81,6 @@ Export-ModuleMember -Function @(
         'Trace-Path'
         # Proxy functions
         'Get-WebProxy'
-        # Client cert functions
-        'Get-ClientCertificate'
     )
 
 # Override Out-Default globally.
