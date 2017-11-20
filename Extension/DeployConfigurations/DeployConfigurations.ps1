@@ -37,6 +37,8 @@ $Configs | Foreach-Object {
             AutomationAccountName = $AutomationAccountName
             Verbose = $True
         }
+
+        Import-AzureRmAutomationDscConfiguration @ImportConfigurationParameters
     }
     elseif ($PublishedConfigs.Name -Contains $_.BaseName -and $OverwriteExistingConfigurations) {
         Write-Verbose -Message "Updating Configuration file: $($_.Name)"
@@ -48,10 +50,13 @@ $Configs | Foreach-Object {
             Verbose = $True
             Force = $True
         }
+
+        Import-AzureRmAutomationDscConfiguration @ImportConfigurationParameters
     }
     else {
         Write-Warning -Message "Configuration already published. To overwrite tick the 'Overwrite Existing Configuration' box on the task."
     }
+
 }
 
 Write-Verbose -Message "Finding all the DSC resources needed by Configurations"
