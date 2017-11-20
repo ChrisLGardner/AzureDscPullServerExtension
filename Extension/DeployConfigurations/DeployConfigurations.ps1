@@ -130,10 +130,14 @@ Foreach ($Resource in $DscResources) {
 
 Write-Verbose -Message "Triggering compilation of each configuration"
 $Params = @{
-    Credential = $Username
-    EnvPrefix = $envPrefix
+    Credential = 'demoadmin'
+    EnvPrefix = 'test123'
 }
+
+$ConfigPath = Get-ChildItem -Path $Env:SYSTEM_ARTIFACTSDIRECTORY -Filter *.psd1 -Recurse
+$ConfigData = Invoke-Expression (Get-Content -Path $ConfigPath -raw)
+
 $Configs | foreach-Object {
     Write-Verbose -Message "Compiling $($_.Name) configuration."
-    #Start-AzureRmAutomationDscCompilationJob -ConfigurationName $_.BaseName -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName -Parameters $Params -ConfigurationData (iex (Get-Content $PSScriptRoot\..\..\Environments\Generic-WebServer-SQL\Generic-WebServer-SQL.psd1 -raw))
+    Start-AzureRmAutomationDscCompilationJob -ConfigurationName $_.BaseName -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName -Parameters $Params -ConfigurationData $ConfigData
 }
