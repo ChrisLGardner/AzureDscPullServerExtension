@@ -91,7 +91,7 @@ Foreach ($Config in $Configs) {
 
 Write-Verbose -Message "Uploading all DSC Resources to Azure Storage"
 Write-Verbose -Message "Getting storage account details"
-$StorageAccount = Get-AzureRmStorageAccount -ResourceGroupName 'testfordeployments' -Name $StorageAccountName
+$StorageAccount = Get-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName -Name $StorageAccountName
 
 Write-Verbose -Message "Creating a new storage container if one doesn't already exist."
 New-AzureStorageContainer -Name 'dscmodules' -Context $StorageAccount.Context -ErrorAction SilentlyContinue *>&1
