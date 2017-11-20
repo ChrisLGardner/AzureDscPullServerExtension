@@ -15,6 +15,10 @@ Import-Module $PSScriptRoot\ps_modules\AzureHelpers\AzureHelpers_.psm1
 Initialize-Azure
 Import-Module "$PSScriptRoot\Helper.psm1"
 
+$Module = Get-Module AzureRM.Automation -ListAvailable
+
+Write-Verbose -Message "AzureRm.Automation version $($Module.Version) found"
+
 $SourcePath = Get-VstsInput -Name 'SourcePath'
 $ResourceGroupName = Get-VstsInput -Name 'ResourceGroupName'
 $automationAccountName = Get-VstsInput -Name 'automationAccountName'
