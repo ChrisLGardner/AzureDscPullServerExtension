@@ -60,6 +60,7 @@ $Configs | Foreach-Object {
 }
 
 Write-Verbose -Message "Finding all the DSC resources needed by Configurations"
+Install-PackageProvider -Name NuGet -RequiredVersion 2.8.5.208 -Scope CurrentUser -Confirm:$False
 Foreach ($Config in $Configs) {
     Write-Verbose -Message "Checking $($Config.Name) for DSC Resources required"
     $ConfigScript = Get-Ast -Path $Config.FullName
@@ -72,10 +73,8 @@ Foreach ($Config in $Configs) {
     Foreach ($Import in $ImportDscResources) {
         $ModuleName = $Import.CommandElements.Where({$_.Value -ne 'Import-DscResource' -and $_.StaticType.Name -eq 'String' -and $_.Value -match '[a-z]+'})
         $ModuleVersion = $Import.CommandElements.Where({$_.Value -ne 'Import-DscResource' -and $_.StaticType.Name -eq 'String' -and $_.Value -notmatch '[a-z]+'})
-        if ($ModuleName) {Write-Verbose -Message "ModuleName is null or empty"}
+
         Write-Verbose -Message "$($Config.Name) --- Found dependency on $($ModuleName.Value)"
-        $Import | Get-Member | Where-Object MemberType -in @('Property','ScriptProperty','NoteProperty') |Select-Object -ExpandProperty Name | Foreach-Object { Write-Verbose -Message "Found $($Import.$_)"}
-        $ModuleName | Get-Member | Where-Object MemberType -in @('Property','ScriptProperty','NoteProperty') |Select-Object -ExpandProperty Name | Foreach-Object { Write-Verbose -Message "Found $($moduleName.$_)"}
 
         if (-not (Test-Path -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleVersion.Value)")) {
             $SaveModuleParams = @{
@@ -88,7 +87,6 @@ Foreach ($Config in $Configs) {
                 $SaveModuleParams.Repository = (Find-Module -Name $ModuleName.Value -RequiredVersion $ModuleVersion.Value).Repository
             }
 
-            Install-PackageProvider -Name NuGet -MinimumVersion 2.8 -Scope CurrentUser -Confirm:$False
             Write-Verbose -Message "$($Config.Name) --- Downloading $($ModuleName.Value) to Temp location"
             Save-Module @SaveModuleParams -Force -Confirm:$False
         }
