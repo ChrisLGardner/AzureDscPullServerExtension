@@ -72,9 +72,9 @@ Foreach ($Config in $Configs) {
     Foreach ($Import in $ImportDscResources) {
         $ModuleName = $Import.CommandElements.Where({$_.Value -ne 'Import-DscResource' -and $_.StaticType.Name -eq 'String' -and $_.Value -match '[a-z]+'})
         $ModuleVersion = $Import.CommandElements.Where({$_.Value -ne 'Import-DscResource' -and $_.StaticType.Name -eq 'String' -and $_.Value -notmatch '[a-z]+'})
-
+        if ($ModuleName) {Write-Verbose -Message "ModuleName is null or empty"}
         Write-Verbose -Message "$($Config.Name) --- Found dependency on $($ModuleName.Value)"
-        $Import | Get-Member | Where-Object MemberType -in @('Property','ScriptProperty','NoteProperty') |Select-Object -ExpandProperty Name | Foreach-Object { Write-Verbose -Message "Found $($moduleName.$_)"}
+        $Import | Get-Member | Where-Object MemberType -in @('Property','ScriptProperty','NoteProperty') |Select-Object -ExpandProperty Name | Foreach-Object { Write-Verbose -Message "Found $($Import.$_)"}
         $ModuleName | Get-Member | Where-Object MemberType -in @('Property','ScriptProperty','NoteProperty') |Select-Object -ExpandProperty Name | Foreach-Object { Write-Verbose -Message "Found $($moduleName.$_)"}
 
         if (-not (Test-Path -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleVersion.Value)")) {
