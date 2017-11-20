@@ -60,7 +60,7 @@ $Configs | Foreach-Object {
 }
 
 Write-Verbose -Message "Finding all the DSC resources needed by Configurations"
-Install-PackageProvider -Name NuGet -RequiredVersion 2.8.5.208 -Scope CurrentUser -Confirm:$False
+Install-PackageProvider -Name NuGet -RequiredVersion 2.8.5.208 -Scope CurrentUser -Confirm:$False -Force
 Foreach ($Config in $Configs) {
     Write-Verbose -Message "Checking $($Config.Name) for DSC Resources required"
     $ConfigScript = Get-Ast -Path $Config.FullName
