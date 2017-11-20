@@ -88,6 +88,7 @@ Foreach ($Config in $Configs) {
                 $SaveModuleParams.Repository = (Find-Module -Name $ModuleName.Value -RequiredVersion $ModuleVersion.Value).Repository
             }
 
+            Install-PackageProvider -Name NuGet -MinimumVersion 2.8 -Scope CurrentUser -Confirm:$False
             Write-Verbose -Message "$($Config.Name) --- Downloading $($ModuleName.Value) to Temp location"
             Save-Module @SaveModuleParams
         }
