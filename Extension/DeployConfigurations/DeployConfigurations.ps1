@@ -135,7 +135,7 @@ $Params = @{
 }
 
 $ConfigPath = Get-ChildItem -Path $Env:SYSTEM_ARTIFACTSDIRECTORY -Filter *.psd1 -Recurse
-$ConfigData = Invoke-Expression (Get-Content -Path $ConfigPath -raw)
+$ConfigData = Invoke-Expression (Get-Content -Path $ConfigPath.FullName -raw)
 
 $Configs | foreach-Object {
     Write-Verbose -Message "Compiling $($_.Name) configuration."
