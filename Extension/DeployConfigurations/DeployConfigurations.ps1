@@ -90,7 +90,7 @@ Foreach ($Config in $Configs) {
 
             Install-PackageProvider -Name NuGet -MinimumVersion 2.8 -Scope CurrentUser -Confirm:$False
             Write-Verbose -Message "$($Config.Name) --- Downloading $($ModuleName.Value) to Temp location"
-            Save-Module @SaveModuleParams
+            Save-Module @SaveModuleParams -Force -Confirm:$False
         }
 
         If (-Not (Test-Path -Path "$PSScriptRoot\$($ModuleName.Value).zip")) {
