@@ -1,10 +1,12 @@
 [cmdletbinding()]
 param (
-<#    $SourcePath,
+<#
+    $SourcePath,
     $StorageAccountName,
     $AutomationAccountName,
     $ResourceGroupName,
-    [Switch]$OverwriteExistingConfigurations#>
+    [Switch]$OverwriteExistingConfigurations
+#>
 )
 Trace-VstsEnteringInvocation $MyInvocation
 Import-Module $PSScriptRoot\ps_modules\AzureHelpers\AzureHelpers_.psm1
