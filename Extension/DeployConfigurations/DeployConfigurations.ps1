@@ -97,7 +97,8 @@ Foreach ($Config in $Configs) {
 
         If (-Not (Test-Path -Path "$PSScriptRoot\$($ModuleName.Value).zip")) {
             Write-Verbose -Message "$($Config.Name) --- Compressing $($ModuleName.Value) to upload to Azure Stoarage"
-            Compress-Archive -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleVersion.Value)" -DestinationPath "$PSScriptRoot\$($ModuleName.Value).zip"
+            Rename-Item -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleVersion.Value)" -NewName "$($ModuleName.Value)" -Force
+            Compress-Archive -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleName.Value)" -DestinationPath "$PSScriptRoot\$($ModuleName.Value).zip"
         }
     }
 }
