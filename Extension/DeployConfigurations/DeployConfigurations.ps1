@@ -80,7 +80,7 @@ Foreach ($Config in $Configs) {
 
         Write-Verbose -Message "$($Config.Name) --- Found dependency on $($ModuleName.Value)"
 
-        if (-not (Test-Path -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleVersion.Value)")) {
+        if (-not (Test-Path -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleVersion.Value)") -and $ModuleName.Value -ne 'xSQL') {
             $SaveModuleParams = @{
                 Name = $ModuleName.Value
                 Path = $Env:TEMP
@@ -95,7 +95,7 @@ Foreach ($Config in $Configs) {
             Save-Module @SaveModuleParams -Force -Confirm:$False
         }
 
-        If (-Not (Test-Path -Path "$PSScriptRoot\$($ModuleName.Value).zip")) {
+        If (-Not (Test-Path -Path "$PSScriptRoot\$($ModuleName.Value).zip") -and $ModuleName.Value -ne 'xSQL') {
             Write-Verbose -Message "$($Config.Name) --- Compressing $($ModuleName.Value) to upload to Azure Stoarage"
             Rename-Item -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleVersion.Value)" -NewName "$($ModuleName.Value)" -Force
             Compress-Archive -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleName.Value)" -DestinationPath "$PSScriptRoot\$($ModuleName.Value).zip"
