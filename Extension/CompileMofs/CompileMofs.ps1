@@ -41,7 +41,7 @@ Write-Verbose -Message "Finding all the configurations available on the automati
 $AAConfigurations = Get-AzureRmAutomationDscConfiguration -ResourceGroupName $ResourceGroupName -AutomationAccountName $automationAccountName
 Write-Verbose -Message "Found $($AAConfigurations.Count) configurations"
 
-Write-Verbose -Message "Triggering compilation of each configuration specified ($(ConfigurationParameters.Configuration.count))"
+Write-Verbose -Message "Triggering compilation of each configuration specified ($($ConfigurationParameters.Configuration.count))"
 
 Foreach ($Configuration in $ConfigurationParameters.Configuration) {
 
