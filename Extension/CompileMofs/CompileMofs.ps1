@@ -12,25 +12,63 @@ $Module = Get-Module AzureRM.Automation -ListAvailable
 
 Write-Verbose -Message "AzureRm.Automation version $($Module.Version) found"
 
-$ConfigurationParameters = Get-VstsInput -Name 'ConfigurationParameters'
+$ConfigurationParametersPath = Get-VstsInput -Name 'ConfigurationParametersPath'
 $ResourceGroupName = Get-VstsInput -Name 'ResourceGroupName'
 $automationAccountName = Get-VstsInput -Name 'automationAccountName'
 $Psd1SourcePath = Get-VstsInput -Name 'Psd1SourcePath'
 
-Write-Verbose -Message "Finding all the configurations available on the automation account"
-$Configs = Get-ChildItem $SourcePath -Recurse -include *.ps1
-Write-Verbose -Message "Found $($Configs.Count) configurations"
-
-Write-Verbose -Message "Triggering compilation of each configuration"
-$Params = @{
-    Credential = 'demoadmin'
-    EnvPrefix = 'test123'
+If (-not (Test-Path -Path $ConfigurationParametersPath)) {
+    Write-Error "Invalid path for Configuration parameters path ($ConfigurationParametersPath). Verify the path is correct and the file exists and try again."
+    exit -1
+}
+elseif ($ConfigurationParametersPath.Split('.')[-1] -notIn @('json','psd1')) {
+    Write-Error "Invalid file type for Configuration parameters path ($ConfigurationParametersPath). Verify the file is .json or .psd1 and try again."
+    exit -1
+}
+If (-not (Test-Path -Path $Psd1SourcePath)) {
+    Write-Error "Invalid path for Configuration Data Source ($Psd1SourcePath). Verify the path is correct and the file exists and try again."
+    exit -1
 }
 
-$ConfigPath = Get-ChildItem -Path $Env:SYSTEM_ARTIFACTSDIRECTORY -Filter *.psd1 -Recurse
-$ConfigData = Invoke-Expression (Get-Content -Path $ConfigPath.FullName -raw)
+If ($ConfigurationParametersPath -match '\.json$') {
+    $ConfigurationParameters = Get-Content -Path $ConfigurationParametersPath -Raw | ConvertFrom-Json
+}
+else {
+    $ConfigurationParameters = Import-PowerShellDataFile -Path $ConfigurationParametersPath
+}
 
-$Configs | foreach-Object {
-    Write-Verbose -Message "Compiling $($_.Name) configuration."
-    Start-AzureRmAutomationDscCompilationJob -ConfigurationName $_.BaseName -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName -Parameters $Params -ConfigurationData $ConfigData
+Write-Verbose -Message "Finding all the configurations available on the automation account"
+$AAConfigurations = Get-AzureRmAutomationDscConfiguration -ResourceGroupName $ResourceGroupName -AutomationAccountName $automationAccountName
+Write-Verbose -Message "Found $($AAConfigurations.Count) configurations"
+
+Write-Verbose -Message "Triggering compilation of each configuration specified ($(ConfigurationParameters.Configuration.count))"
+
+Foreach ($Configuration in $ConfigurationParameters.Configuration) {
+
+    Write-Verbose -Message "Triggering compilation of $($Configuration.ConfigurationName) configuration"
+    $StartCompilationParameters = @{
+        ConfigurationName = $Configuration.ConfigurationName
+        ResourceGroupName = $ResourceGroupName
+        AutomationAccountName = $AutomationAccountName
+    }
+    $Configuration.Remove('ConfigurationName')
+
+    If ($ConfigurationParametersPath -match '\.json$') {
+        $Configuration = $Configuration.PsObject.Properties | Foreach-Object -Begin { $hash = @{}} -Process {
+            $hash[$_.Name] = $_.value
+        } -End { $hash }
+    }
+
+    If ($Configuration.ConfigurationData) {
+        Write-Verbose -Message "Finding specified Configuration Data file under path: $Psd1SourcePath"
+        $ConfigurationDataPath = Get-ChildItem -Path $Psd1SourcePath -Filter $Configuration.ConfigurationData -Recurse | Select-Object -First 1
+        Write-Verbose -Message "Importing Configuration Data file: $($ConfigurationDataPath.FullName)"
+        $ConfigurationData = Import-PowerShellDataFile -Path $ConfigurationDataPath.FullName
+        $StartCompilationParameters.Add('ConfigurationData',$ConfigurationData)
+        $Configuration.Remove('ConfigurationData')
+    }
+
+    $StartCompilationParameters.Add('Parameters',$Configuration)
+
+    Start-AzureRmAutomationDscCompilationJob @StartCompilationParameters
 }
