@@ -49,20 +49,20 @@
       }
     },
     {
+      "name": "ConfigurationParametersPath",
+      "type": "filePath",
+      "label": "Configuration parameters path",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Any parameters needed by the configurations to compile in a json or psd1 file. Any credentials should be the name of a credential in Azure Automation's credntial store. Check the documentation for formats accepted."
+    },
+    {
       "name": "Psd1SourcePath",
       "type": "filePath",
       "label": "Configuration Data Source",
-      "defaultValue": "",
+      "defaultValue": "$(System.DefaultWorkingDirectory)",
       "required": false,
-      "helpMarkDown": "Absolute path of the source folder, or file on the local machine, or a UNC share. This will filter for any PSD1 files within it."
-    },
-    {
-      "name": "ConfigurationParameters",
-      "type": "string",
-      "label": "Configuration parameters",
-      "defaultValue": "",
-      "required": false,
-      "helpMarkDown": "Any parameters needed for the DSC Configuration, using the format -ParameterName ParameterValue. Any credentials should be the name of a credential in Azure Automation's credntial store."
+      "helpMarkDown": "Path of the source folder, or file on the local machine, or a UNC share. This will filter for any PSD1 files within it based on input from the Configuration Parameters input."
     }
   ],
   "dataSourceBindings": [
