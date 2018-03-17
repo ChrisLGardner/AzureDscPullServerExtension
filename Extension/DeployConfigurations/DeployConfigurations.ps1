@@ -26,7 +26,10 @@ $StorageAccountName = Get-VstsInput -Name 'StorageAccountName'
 $OverwriteExistingConfigurations = Get-VstsInput -Name 'OverwriteExistingConfigurations'
 
 Write-Verbose -Message "Finding all the configurations available under the path: $SourcePath"
-$Configs = Get-ChildItem $SourcePath -Recurse -include *.ps1
+$Configs = Get-ChildItem $SourcePath -Recurse -include *.ps1 |
+            Select-String -Pattern '^Configuration' |
+            Select-Object Path |
+            Get-Item
 Write-Verbose -Message "Found $($Configs.Count) configurations"
 
 Write-Verbose -Message "Publishing configurations to specified Azure Automation account"
