@@ -97,7 +97,8 @@ Foreach ($Config in $Configs) {
 
         If (-Not (Test-Path -Path "$PSScriptRoot\$($ModuleName.Value).zip") -and $ModuleName.Value -ne 'xSQL') {
             Write-Verbose -Message "$($Config.Name) --- Compressing $($ModuleName.Value) to upload to Azure Stoarage"
-            Rename-Item -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleVersion.Value)" -NewName "$($ModuleName.Value)" -Force
+            $ModuleVersion = Get-ChildItem -Path "$Env:Temp\$($ModuleName.Value)" | Select-Object -ExpandProperty Name
+            Rename-Item -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleVersion)" -NewName "$($ModuleName.Value)" -Force
             Compress-Archive -Path "$Env:Temp\$($ModuleName.Value)\$($ModuleName.Value)" -DestinationPath "$PSScriptRoot\$($ModuleName.Value).zip"
         }
     }
