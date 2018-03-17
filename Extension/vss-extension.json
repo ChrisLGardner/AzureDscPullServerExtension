@@ -37,6 +37,15 @@
     }
   },
   "screenshots": [
+    {
+      "path": "images/screenshot1.PNG"
+    },
+    {
+      "path": "images/screenshot2.PNG"
+    },
+    {
+      "path": "images/screenshot3.PNG"
+    }
   ],
   "content": {
     "details": {
