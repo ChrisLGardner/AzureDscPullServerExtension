@@ -51,13 +51,14 @@ Foreach ($Configuration in $ConfigurationParameters.Configuration) {
         ResourceGroupName = $ResourceGroupName
         AutomationAccountName = $AutomationAccountName
     }
-    $Configuration.Remove('ConfigurationName')
 
     If ($ConfigurationParametersPath -match '\.json$') {
         $Configuration = $Configuration.PsObject.Properties | Foreach-Object -Begin { $hash = @{}} -Process {
             $hash[$_.Name] = $_.value
         } -End { $hash }
     }
+
+    $Configuration.Remove('ConfigurationName')
 
     If ($Configuration.ConfigurationData) {
         Write-Verbose -Message "Finding specified Configuration Data file under path: $Psd1SourcePath"
