@@ -3,7 +3,7 @@
 *Releases*
 1.0.x - Initial public release
 
-This is a VSTS build and release extension which allows you to publish PowerShell Desired State Configuration (DSC) configurattions to an Azure Automation pull server and then compile those configurations.
+This is a VSTS build and release extension which allows you to publish PowerShell Desired State Configuration (DSC) configurations to an Azure Automation pull server and then compile those configurations.
 
 The extension contains 2 tasks, Deploy Azure DSC Configuration and Compile Azure DSC MOF.
 
